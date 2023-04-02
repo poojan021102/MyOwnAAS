@@ -350,11 +350,9 @@ app.get("/markAttendance/:attendanceId/:studentEmail",async(req,res)=>{
             res.render("attendanceCredentials/invalidLecture");
         }
         else{
-            // const s = await User.find({email:req.params.email});
-            // if(!s.length)
             const student = await StudentEnrollment.find({courseId:lecture.courseId,studentEmail:req.params.studentEmail});
             if(!student.length){
-                res.render("attendanceCredentials/invalidStudent",{studentEmail:req.params.studentEmail,courseCode:student.courseCode});
+                res.render("attendanceCredentials/invalidStudent",{studentEmail:req.params.studentEmail});
             }
             else{
                 const mark1 = await MarkAttendance.find({
