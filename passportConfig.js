@@ -12,7 +12,7 @@ exports.initializingPassport = (passport)=>{
             const user = await User.findOne({email:username});
             if (!user)return done(null,false);
             if(!bcyrpt.compare(password,user.password) || req.body.role !== user.role)return done(null,false);
-            return done(null,user);
+            else return done(null,user);
         }
         catch(err){
             return done(err,false);

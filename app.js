@@ -1,13 +1,13 @@
 const express = require("express");
 const nodemailer = require('nodemailer');
 const app = express();
-const mongoose = require("mongoose")
+const mongoose = require("mongoose");
 const ejs = require("ejs");
-const passport = require("passport")
-const {initializingPassport,isAuthenticated} = require("./passportConfig")
-const expressSession = require("express-session")
-const path = require("path")
-const multer = require("multer")
+const passport = require("passport");
+const {initializingPassport,isAuthenticated} = require("./passportConfig");
+const expressSession = require("express-session");
+const path = require("path");
+const multer = require("multer");
 const XLSX = require("xlsx");
 const ActiveAttendance = require("./models/activeAttendance");
 const AllCourses = require("./models/allCourses");
@@ -15,6 +15,11 @@ const AllLectures = require("./models/allLectures");
 const StudentEnrollment = require("./models/studentEnrollment");
 const User = require("./models/user");
 const MarkAttendance = require("./models/markAttendance");
+const allCourses = require("./models/allCourses");
+const allLectures = require("./models/allLectures");
+const studentEnrollment = require("./models/studentEnrollment");
+const markAttendance = require("./models/markAttendance");
+const user = require("./models/user");
 
 const storage = multer.diskStorage({
     destination:(req,file,callback)=>{
@@ -40,9 +45,9 @@ con.on('open',()=>{
     console.log('Database connected...')
 })
 
-const emailName = "Edyth Hagenes";
-const emailEmail = "edyth17@ethereal.email";
-const emailPassword = "u1p3PW6Z7Ymk9SmrzK";
+const emailName = "Sunny Ledner";
+const emailEmail = "sunny.ledner34@ethereal.email";
+const emailPassword = "aFPbJ8uJkaPVyBDwwH";
 
 app.set("view engine","ejs")
 initializingPassport(passport);
@@ -50,6 +55,9 @@ initializingPassport(passport);
 
 app.use(express.json())
 app.use(express.urlencoded({extended:true}))
+
+
+app.use('/coursePage',express.static(__dirname + '/views/coursePage'));
 
 
 app.use(expressSession({secret:"secret",resave:false,
@@ -124,7 +132,7 @@ app.get("/dashboard/instructor",async(req,res)=>{
         else{
             // console.log(req.user.id.toString())
             const all = await AllCourses.find({instructorId:req.user.id});
-            res.render("dashboard/instructorDashboard",{data:all});
+            res.render("dashboard/instructorDashboard",{data:all,instructorEmail:req.user.email,firstName:req.user.firstName,lastName:req.user.lastName});
         }
     }
 })
@@ -140,8 +148,7 @@ app.get("/addStudent/:courseName/:courseCode/:courseId",(req,res)=>{
     else{
         let courseName = req.params.courseName;
         let courseCode = req.params.courseCode;
-        res.render("addStudent/addStudent",{courseName:courseName,courseCode:courseCode});
-        
+        res.render("addStudent/addStudent",{courseId:req.params.courseId,courseName:courseName,courseCode:courseCode,instructorEmail:user.email});
     }
 })
 
@@ -176,7 +183,8 @@ app.post("/addStudent/:courseName/:courseCode/:courseId",upload.single("file"),a
                 courseCode: courseCode,
                 courseName:courseName,
                 instructorName:req.user.firstName,
-                instructorEmail:req.user.email
+                instructorEmail:req.user.email,
+                studentName:res.name
             })
             // send email to res.email
             const transporter = nodemailer.createTransport({
@@ -193,7 +201,7 @@ app.post("/addStudent/:courseName/:courseCode/:courseId",upload.single("file"),a
                 from: `${emailName} ${emailEmail}`,
                 to: `${res.email}`,
                 subject: `Enrollement in course ${courseCode}`,
-                text: `Hello ${res.email}`,
+                text: `Hello ${res.name}`,
                 html: `<p><b>If you have not registered please register in <a href = 'http://localhost:3000' target = "__blank">Here</a></b></p>`
             };
         
@@ -205,7 +213,7 @@ app.post("/addStudent/:courseName/:courseCode/:courseId",upload.single("file"),a
             })
         
         })
-        res.redirect("/dashboard/instructor");
+        res.redirect("/coursePage/:courseId");
     }
 });
 
@@ -259,10 +267,6 @@ app.get("/createCourse",(req,res)=>{
     }
 })
 
-// get a particular courses created page for instructor
-app.get("/getCourse/:courseID",(req,res)=>{
-
-})
 
 // open attendance for a particular course
 app.get("/openAttendance/:courseId",(req,res)=>{
@@ -386,6 +390,140 @@ app.get("/markAttendance/:attendanceId/:studentEmail",async(req,res)=>{
         }
     }
 });
+
+// course Page
+app.get("/coursePage/:courseId",async(req,res)=>{
+    if(!req.user){
+        res.redirect("/");
+    }
+    else{
+        if(req.user.role == "student"){
+            res.redirect("/dahsboard/student");
+        }
+        else{
+            const course = await allCourses.findById(new mongoose.Types.ObjectId(req.params.courseId));
+            if(!course){
+                res.redirect("/");
+            }
+            else{
+                const number = await studentEnrollment.find({
+                    courseId: new mongoose.Types.ObjectId(req.params.courseId)
+                });
+                const lectures = await allLectures.find({
+                    courseId:new mongoose.Types.ObjectId(req.params.courseId)
+                })
+                const actualNumber = await markAttendance.find({
+                    courseId: new mongoose.Types.ObjectId(req.params.courseId)
+                })
+                // console.log(actualNumber)
+                let averageAttendance = (actualNumber.length/(lectures.length*number.length))*100;
+                if(isNaN(averageAttendance)){
+                    averageAttendance = 0;
+                }
+                allStudentDetails = [];
+                for(let i = 0;i<number.length;++i){
+                    allStudentDetails.push({email:number[i].studentEmail,studentName:number[i].studentName});
+                }
+                allLecturePage = [];
+                lectureData = {};
+                allLectureNames = [];
+                for(let i = 0;i<lectures.length;++i){
+                    allLecturePage.push({
+                        id:lectures[i].id,
+                        lectureName:lectures[i].lectureName
+                    })
+                    lectureData[lectures[i].lectureName] = 0;
+                }
+                for(let i = 0;i<actualNumber.length;i++){
+                    lectureData[actualNumber[i].lectureName] += 1;
+                }
+                allLectureCount = [];
+                Object.keys(lectureData).forEach(function(key) {
+                    allLectureNames.push(key);
+                    allLectureCount.push(lectureData[key]);
+                  })
+
+                res.render("coursePage/index",{
+                    courseId:req.params.courseId,
+                    courseCode:course.courseCode,
+                    courseName: course.courseName,
+                    numberOfStudentEnrolled: number.length,
+                    numberOfLectures:lectures.length,
+                    averageAttendance:averageAttendance,
+                    instructorEmail:req.user.email,
+                    studentDetails:allStudentDetails,
+                    allLectures:allLecturePage,
+                    allLectureNames:allLectureNames,
+                    allLectureCount:allLectureCount
+                });
+            }
+        }
+    }
+})
+
+//lecture Page
+app.get("/lecturePage/:lectureId/:courseId",async(req,res)=>{
+    if(!req.user){
+        res.redirect("/");
+    }
+    else{
+        if(req.user.role == "student"){
+            res.redirect("/dashboard/student");
+        }
+        else{
+            const allStudent = await studentEnrollment.find({
+                courseId:new mongoose.Types.ObjectId(req.params.courseId) 
+            });
+            const course = await allCourses.findById(new mongoose.Types.ObjectId(req.params.courseId));
+            // console.log(course)
+            // console.log(allStudent)
+            if(!course){
+                res.redirect("/");
+            }
+            else if(!allStudent.length){
+                res.redirect("/");
+            }
+            else{
+                // console.log("Here")
+                allStudentData = {};
+                studentName = {};
+                for(let i = 0;i<allStudent.length;++i){
+                    allStudentData[allStudent[i].studentEmail] = 0;
+                    studentName[allStudent[i].studentEmail] = allStudent[i].studentName;
+                }
+                const marked = await markAttendance.find({
+                    lectureId:new mongoose.Types.ObjectId(req.params.lectureId)
+                });
+                const lec = await allLectures.findById(new mongoose.Types.ObjectId(req.params.lectureId));
+                const allLec = await allLectures.find({
+                    courseId:new mongoose.Types.ObjectId(req.params.courseId)
+                });
+
+                if(!allLec.length || !lec){
+                    res.redirect("/");
+                }
+                else{
+                    for(let i = 0;i<marked.length;++i){
+                        allStudentData[marked[i].studentEmail] = 1;
+                    }
+                    allStudents = [];
+                    Object.keys(allStudentData).forEach(function(key) {
+                        allStudents.push({email:key,count:allStudentData[key],studentName:studentName[key]});
+                    });
+                    res.render("lecturePage/index",{
+                        allStudentData:allStudents,
+                        courseCode:course.courseCode,
+                        courseName:course.courseName,
+                        courseId:req.params.courseId,
+                        allLectures:allLec,
+                        instructorEmail:req.user.email,
+                        lectureName: lec.lectureName,
+                    });
+                }
+            }
+        }
+    }
+}) 
 
 // logout
 app.get("/logout",(req,res,next)=>{

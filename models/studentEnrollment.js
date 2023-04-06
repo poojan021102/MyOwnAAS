@@ -28,6 +28,9 @@ const studentEnrollmentSchema = new mongoose.Schema({
     instructorEmail:{
         type:String,
         required:true
+    },
+    studentName:{
+        type:String
     }
 })
 
