@@ -337,7 +337,7 @@ app.post("/openAttendance/:courseId",async(req,res)=>{
                 }
             })
         }
-        res.redirect("/");
+        res.redirect(`/coursePage/${req.params.courseId}`);
     }
 });
 
