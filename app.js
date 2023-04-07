@@ -45,9 +45,9 @@ con.on('open',()=>{
     console.log('Database connected...')
 })
 
-const emailName = "Sunny Ledner";
-const emailEmail = "sunny.ledner34@ethereal.email";
-const emailPassword = "aFPbJ8uJkaPVyBDwwH";
+const emailName = "Rosalee Ferry";
+const emailEmail = "rosalee.ferry0@ethereal.email";
+const emailPassword = "6aAGhJPAC88yShD2A8";
 
 app.set("view engine","ejs")
 initializingPassport(passport);
@@ -227,7 +227,7 @@ app.get("/dashboard/student",async(req,res)=>{
         }
         else{
             const all = await StudentEnrollment.find({studentEmail:req.user.email});
-            res.render("dashboard/studentDashboard",{data:all});
+            res.render("dashboard/studentDashboard",{data:all,studentEmail:req.user.email,firstName:req.user.firstName,lastName:req.user.lastName});
         }
     }
 })
@@ -397,8 +397,8 @@ app.get("/coursePage/:courseId",async(req,res)=>{
         res.redirect("/");
     }
     else{
-        if(req.user.role == "student"){
-            res.redirect("/dahsboard/student");
+        if(req.user.role == "instructor"){
+            res.redirect("/dashboard/instructor");
         }
         else{
             const course = await allCourses.findById(new mongoose.Types.ObjectId(req.params.courseId));
@@ -524,6 +524,67 @@ app.get("/lecturePage/:lectureId/:courseId",async(req,res)=>{
         }
     }
 }) 
+
+// student Course Page
+app.get("/studentCoursePage/:courseId",async(req,res)=>{
+    if(!req.user){
+        res.redirect("/");
+    }
+    else{
+        if(req.user.role == "instructor"){
+            res.redirect("/dashboard/instructor");
+        }
+        else{
+            // console.log(req.params.courseId)
+            const course = await allCourses.findById(new mongoose.Types.ObjectId(req.params.courseId));
+            const allLectureMade = await allLectures.find({
+                courseId:new mongoose.Types.ObjectId(req.params.courseId)
+            });
+            const markedAttendance = await MarkAttendance.find({
+                courseId:new mongoose.Types.ObjectId(req.params.courseId),
+                studentEmail:req.user.email
+            });
+            if(!course){
+                res.redirect("/dashboard/student");
+            }
+            else{
+                allLectureId = {};
+                allLectureName = {};
+                for(let i = 0;i<allLectureMade.length;++i){
+                    allLectureId[allLectureMade[i].id] = 0;
+                    allLectureName[allLectureMade[i].id] = allLectureMade[i].lectureName;
+                }
+                for(let i = 0;i<markedAttendance.length;++i){
+                    allLectureId[markedAttendance[i].lectureId] = 1;
+                }
+                actualLectureName = [];
+                actualLectureStatus = [];
+                Object.keys(allLectureId).forEach(function(key) {
+                    actualLectureName.push(allLectureName[key]);
+                    actualLectureStatus.push(allLectureId[key]);
+                  });
+                let avg = (markedAttendance.length/allLectureMade.length)*100;
+                if(isNaN(avg)){
+                    avg = 0;
+                }
+                res.render("studentCoursePage/studentCoursePage",{
+                    courseCode:course.courseCode,
+                    courseName:course.courseName,
+                    studentEmail:req.user.email,
+                    firstName:req.user.firstName,
+                    lastName:req.user.lastName,
+                    totalLectureCreated:allLectureMade.length,
+                    markedAttendance:markedAttendance.length,
+                    averageAttendance:avg,
+                    courseId:course.id,
+                    actualLectureName:actualLectureName,
+                    actualLectureStatus:actualLectureStatus
+                });
+            }
+        }
+    }
+});
+
 
 // logout
 app.get("/logout",(req,res,next)=>{
