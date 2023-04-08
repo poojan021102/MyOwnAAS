@@ -20,6 +20,7 @@ const allLectures = require("./models/allLectures");
 const studentEnrollment = require("./models/studentEnrollment");
 const markAttendance = require("./models/markAttendance");
 const user = require("./models/user");
+const xl = require("excel4node");
 
 const storage = multer.diskStorage({
     destination:(req,file,callback)=>{
@@ -397,8 +398,8 @@ app.get("/coursePage/:courseId",async(req,res)=>{
         res.redirect("/");
     }
     else{
-        if(req.user.role == "instructor"){
-            res.redirect("/dashboard/instructor");
+        if(req.user.role == "student"){
+            res.redirect("/dashboard/student");
         }
         else{
             const course = await allCourses.findById(new mongoose.Types.ObjectId(req.params.courseId));
@@ -585,6 +586,67 @@ app.get("/studentCoursePage/:courseId",async(req,res)=>{
     }
 });
 
+// download report
+app.get("/downloadReport/:courseId",async(req,res)=>{
+    if(!req.user){
+        res.redirect("/");
+    }
+    else{
+        if(req.user.role == "student"){
+            res.redirect("/dashboard/student");
+        }
+        else{
+            const course = await allCourses.findById(new mongoose.Types.ObjectId(req.params.courseId));
+            if(!course){
+                res.redirect("/");
+            }
+            else{
+                const allLec = await allLectures.find({
+                    courseId:new mongoose.Types.ObjectId(req.params.courseId)
+                });
+                headerName = ["Student Email"];
+                lectureData = {};
+                for(let i = 0;i<allLec.length;++i){
+                    headerName.push(allLec[i].lectureName);
+                }
+                const allStudent = await StudentEnrollment.find({
+                    courseId:new mongoose.Types.ObjectId(req.params.courseId)
+                });
+                for(let i = 0;i<allStudent.length;++i){
+                    lectureData[allStudent[i].studentEmail] = {};
+                    for(let j = 1;j<headerName.length;++j){
+                        lectureData[allStudent[i].studentEmail][headerName[j]] = "0";
+                    }
+                }
+                const mark = await markAttendance.find({
+                    courseId:new mongoose.Types.ObjectId(req.params.courseId)
+                });
+                for(let i = 0;i<mark.length;++i){
+                    lectureData[mark[i].studentEmail][mark[i].lectureName] = "1";
+                }
+
+                const wb = new xl.Workbook();
+                const ws = wb.addWorksheet(`${course.courseCode}-${course.courseName}`);
+                colIndex = 1;
+                headerName.forEach(item=>{
+                    ws.cell(1,colIndex++).string(item);
+                });
+                let rowIndex = 2;
+                Object.keys(lectureData).forEach(key=>{
+                    colIndex = 1;
+                    ws.cell(rowIndex,colIndex++).string(key);
+                    Object.keys(lectureData[key]).forEach(lec=>{
+                        ws.cell(rowIndex,colIndex++).string(lectureData[key][lec]);
+                    })
+                    rowIndex++;
+                });
+                const n = `downloadReport/${course.courseCode}-${course.courseName}.xlsx`; 
+                wb.write(n);
+                res.download(n);
+            }
+        }
+    }
+})
 
 // logout
 app.get("/logout",(req,res,next)=>{
