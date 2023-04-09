@@ -46,9 +46,12 @@ con.on('open',()=>{
     console.log('Database connected...')
 })
 
-const emailName = "Rosalee Ferry";
-const emailEmail = "rosalee.ferry0@ethereal.email";
-const emailPassword = "6aAGhJPAC88yShD2A8";
+// const emailName = "Rosalee Ferry";
+// const emailEmail = "rosalee.ferry0@ethereal.email";
+// const emailPassword = "6aAGhJPAC88yShD2A8";
+
+const emailEmail = "poojanpatel02112002@gmail.com"
+const emailPassword = "yozbsphjlxhtggpl"
 
 app.set("view engine","ejs")
 initializingPassport(passport);
@@ -189,8 +192,8 @@ app.post("/addStudent/:courseName/:courseCode/:courseId",upload.single("file"),a
             })
             // send email to res.email
             const transporter = nodemailer.createTransport({
-                host: 'smtp.ethereal.email',
-                port: 587,
+                service: 'gmail',
+                port: 465,
                 auth: {
                     user: `${emailEmail}`,
                     pass: `${emailPassword}`
@@ -199,7 +202,7 @@ app.post("/addStudent/:courseName/:courseCode/:courseId",upload.single("file"),a
         
             // Message object
             let message = {
-                from: `${emailName} ${emailEmail}`,
+                from: `${emailEmail}`,
                 to: `${res.email}`,
                 subject: `Enrollement in course ${courseCode}`,
                 text: `Hello ${res.name}`,
@@ -214,7 +217,7 @@ app.post("/addStudent/:courseName/:courseCode/:courseId",upload.single("file"),a
             })
         
         })
-        res.redirect("/coursePage/:courseId");
+        res.redirect(`/coursePage/${req.params.courseId}`);
     }
 });
 
@@ -314,8 +317,8 @@ app.post("/openAttendance/:courseId",async(req,res)=>{
         for(let i = 0;i<s.length;++i){
             // send email to res.email
             const transporter = nodemailer.createTransport({
-                host: 'smtp.ethereal.email',
-                port: 587,
+                service: 'gmail',
+                port: 465,
                 auth: {
                     user: `${emailEmail}`,
                     pass: `${emailPassword}`
@@ -324,7 +327,7 @@ app.post("/openAttendance/:courseId",async(req,res)=>{
         
             // Message object
             let message = {
-                from:  `${emailName} ${emailEmail}`,
+                from:  `${emailEmail}`,
                 to: `${s[i]}`,
                 subject: `Attendance in course ${listOfStudents[i].courseCode}`,
                 text: `Hello ${s[i]}`,
