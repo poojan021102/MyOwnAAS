@@ -41,11 +41,19 @@
                 <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
                     <div class="sb-sidenav-menu">
                         <div class="nav">
-                            <div class="sb-sidenav-menu-heading">Core</div>
+                            <div class="sb-sidenav-menu-heading">Dashboard</div>
                             <a class="nav-link" href="#" disabled>
                                 <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                                Dashboard
+                                Create New Course
                             </a>
+                            
+                            <div class="sb-sidenav-menu-heading">Courses</div>
+                        <%for(var i = 0; i<data.length; ++i){%>
+                            <a class="nav-link" href="/coursePage/<%= data[i].id %>" disabled>
+                                <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                                <%= data[i].courseCode %>-<%= data[i].courseName %>
+                            </a>
+                            <%}%>
                             
                         </div>
                     </div>
