@@ -65,7 +65,7 @@ app.use('/coursePage',express.static(__dirname + '/views/coursePage'));
 
 
 app.use(expressSession({secret:"secret",resave:false,
-    saveUninitialized:false
+saveUninitialized:false
 }));
 app.use(passport.initialize());
 app.use(passport.session());
@@ -173,8 +173,8 @@ app.post("/addStudent/:courseName/:courseCode/:courseId",upload.single("file"),a
         for (let i = 0;i<sheets.length;++i){
             const temp = XLSX.utils.sheet_to_json(
                 file.Sheets[file.SheetNames[i]]
-            );
-            temp.forEach((res)=>{
+                );
+                temp.forEach((res)=>{
                 data.push(res);
             })
         }
@@ -199,7 +199,7 @@ app.post("/addStudent/:courseName/:courseCode/:courseId",upload.single("file"),a
                     pass: `${emailPassword}`
                 }
             });
-        
+            
             // Message object
             let message = {
                 from: `${emailEmail}`,
@@ -304,15 +304,15 @@ app.post("/openAttendance/:courseId",async(req,res)=>{
             s.push(listOfStudents[i].studentEmail);
         }
         // start new attendance
-
-
+        
+        
         const t = await ActiveAttendance.create({
             lectureId:w.id,
             startTime: new Date(),
             minutes:req.body.minutes
         });
-
-
+        
+        
         // send email to /t.id/studentEmail
         for(let i = 0;i<s.length;++i){
             // send email to res.email
@@ -502,7 +502,7 @@ app.get("/lecturePage/:lectureId/:courseId",async(req,res)=>{
                 const allLec = await allLectures.find({
                     courseId:new mongoose.Types.ObjectId(req.params.courseId)
                 });
-
+                
                 if(!allLec.length || !lec){
                     res.redirect("/");
                 }
@@ -567,11 +567,11 @@ app.get("/studentCoursePage/:courseId",async(req,res)=>{
                     actualLectureName.push(allLectureName[key]);
                     actualLectureStatus.push(allLectureId[key]);
                   });
-                let avg = (markedAttendance.length/allLectureMade.length)*100;
-                if(isNaN(avg)){
-                    avg = 0;
-                }
-                res.render("studentCoursePage/studentCoursePage",{
+                  let avg = (markedAttendance.length/allLectureMade.length)*100;
+                  if(isNaN(avg)){
+                      avg = 0;
+                    }
+                    res.render("studentCoursePage/studentCoursePage",{
                     courseCode:course.courseCode,
                     courseName:course.courseName,
                     studentEmail:req.user.email,
@@ -659,6 +659,9 @@ app.get("/logout",(req,res,next)=>{
     });
 });
 
+app.use((req, res, next) => {
+    res.status(404).render("pageNotFound/pageNotFound");
+})
 app.listen(3000,()=>{
     console.log("Listening on port 3000")
 });
