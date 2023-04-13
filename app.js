@@ -271,6 +271,39 @@ app.get("/createCourse",(req,res)=>{
     }
 })
 
+// delete course for instructor
+app.get("/deleteCourse/:courseId",async(req,res)=>{
+    if(!req.user){
+        res.redirect("/");
+    }
+    else if(req.user.role == "student"){
+        res.redirect("/dashboard/student");
+    }
+    else{
+        const a = await AllCourses.deleteMany({
+            "_id": new mongoose.Types.ObjectId(req.params.courseId)
+        });
+        const c = await allLectures.find({
+            "courseId":new mongoose.Types.ObjectId(req.params.courseId)
+        });
+        await allLectures.deleteMany({
+            "courseId":new mongoose.Types.ObjectId(req.params.courseId)
+        });
+        for(let i = 0;i<c.length;++i){
+            await ActiveAttendance.deleteMany({
+                "lectureId":c[i].id
+            });
+        }
+        await MarkAttendance.deleteMany({
+            "lectureId":new mongoose.Types.ObjectId(req.params.courseId)
+        });
+        await StudentEnrollment.deleteMany({
+            "courseId":new mongoose.Types.ObjectId(req.params.courseId)
+        });
+        res.redirect("/dashboard/instructor");
+    }
+})
+
 
 // open attendance for a particular course
 app.get("/openAttendance/:courseId",(req,res)=>{

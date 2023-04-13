@@ -84,12 +84,14 @@
                                         <tr>
                                             <th>Course Code</th>
                                             <th>Course Name</th>
+                                            <th></th>
                                         </tr>
                                     </thead>
                                     <tfoot>
                                         <tr>
                                             <th>Course Code</th>
                                             <th>Course Name</th>
+                                            <th></th>
                                         </tr>
                                     </tfoot>
                                     <tbody>
@@ -97,6 +99,7 @@
                                                 <tr>
                                                     <td><a href="/coursePage/<%= data[i].id %>"><%= data[i].courseCode %></a></td>
                                                     <td><%= data[i].courseName %></td>
+                                                    <td><a href = "/deleteCourse/<%= data[i].id %>" class="btn btn-danger">Delete</a></td>
                                                 </tr>
                                             <% } %>
                                     </tbody>
