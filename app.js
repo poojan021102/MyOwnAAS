@@ -102,8 +102,16 @@ app.post("/register/student",async(req,res)=>{
         res.redirect("/register/student")
     }
     else{
-        const newUser=await User.create(req.body);
-        res.redirect("/login/student")
+        const n = await User.find({
+            email:req.body.email
+        });
+        if(n.length){
+            res.redirect("/register/student");
+        }
+        else{
+            const newUser=await User.create(req.body);
+            res.redirect("/login/student")
+        }
     }
 });
 app.get("/register/student",(req,res)=>{
