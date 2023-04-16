@@ -314,7 +314,7 @@ app.get("/deleteCourse/:courseId",async(req,res)=>{
 
 
 // open attendance for a particular course
-app.get("/openAttendance/:courseId",(req,res)=>{
+app.get("/openAttendance/:courseId",async(req,res)=>{
     if(!req.user){
         res.redirect("/");
     }
@@ -322,7 +322,17 @@ app.get("/openAttendance/:courseId",(req,res)=>{
         res.redirect("/dashboard/student");
     }
     else{
-        res.render("openAttendance/openAttendance",{courseId:req.params.courseId});
+        const course = await AllCourses.findById(new mongoose.Types.ObjectId(req.params.courseId));
+        if(!course){
+            res.redirect("/");
+        }
+        else{
+            res.render("openAttendance/openAttendance",{courseId:req.params.courseId,
+                courseCode:course.courseCode,
+                courseName:course.courseName,
+                instructorEmail:req.user.email,
+            });
+        }
     }
 })
 
