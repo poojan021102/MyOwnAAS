@@ -62,7 +62,7 @@ app.use(express.urlencoded({extended:true}))
 
 
 app.use('/coursePage',express.static(__dirname + '/views/coursePage'));
-
+app.use('/homePageTemplate',express.static(__dirname + '/views/homePage'));
 
 app.use(expressSession({secret:"secret",resave:false,
 saveUninitialized:false
@@ -72,7 +72,7 @@ app.use(passport.session());
 
 // home page
 app.get("/",async(req,res)=>{
-    if(!req.user) res.render("homePage/homePage");
+    if(!req.user) res.render("homePage/index");
     else{
         if(req.user.role === "student")res.redirect("/dashboard/student");
         else res.redirect("/dashboard/instructor");
