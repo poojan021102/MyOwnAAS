@@ -712,9 +712,11 @@ app.get("/deleteCourse/:courseId",async(req,res)=>{
                 "lectureId":c[i].id
             });
         }
-        await MarkAttendance.deleteMany({
-            "lectureId":new mongoose.Types.ObjectId(req.params.courseId)
-        });
+        for(let i = 0;i<c.length;++i){
+            await MarkAttendance.deleteMany({
+                "lectureId":c[i].id
+            });
+        }
         await StudentEnrollment.deleteMany({
             "courseId":new mongoose.Types.ObjectId(req.params.courseId)
         });
