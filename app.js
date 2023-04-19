@@ -420,10 +420,10 @@ app.post("/addStudent/:courseName/:courseCode/:courseId",upload.single("file"),a
                                                                                 style="width:100%;padding-right:0px;padding-left:0px;">
                                                                                 <div align="center" class="alignment"
                                                                                     style="line-height:10px"><a
-                                                                                        href="https://www.example.com"
+                                                                                        href="http://localhose:3000"
                                                                                         style="outline:none" tabindex="-1"
                                                                                         target="_blank"><img alt="your-logo"
-                                                                                            src="images/Your-logo.png"
+                                                                                            src="/coursePage/emailTemplateImages/Your-logo.png"
                                                                                             style="display: block; height: auto; border: 0; width: 193px; max-width: 100%;"
                                                                                             title="your-logo" width="193" />AAS</a></div>
                                                                             </td>
@@ -465,7 +465,7 @@ app.post("/addStudent/:courseName/:courseCode/:courseId",upload.single("file"),a
                                                                                     <tr>
                                                                                         <td
                                                                                             style="vertical-align: middle; text-align: center; padding-top: 0px; padding-bottom: 0px; padding-left: 20px; padding-right: 20px;">
-                                                                                            <a href="https://www.example.com"
+                                                                                            <a href=""
                                                                                                 style="text-decoration: none;"
                                                                                                 target="_self"><img align="center"
                                                                                                     alt="new year celebration"
@@ -586,7 +586,7 @@ app.post("/addStudent/:courseName/:courseCode/:courseId",upload.single("file"),a
                                                                                         href="https://www.example.com"
                                                                                         style="outline:none" tabindex="-1"
                                                                                         target="_blank"><img alt="your logo"
-                                                                                            src="images/Your-logo.png"
+                                                                                            src="/coursePage/emailTemplateImages/Your-logo.png"
                                                                                             style="display: block; height: auto; border: 0; width: 155px; max-width: 100%;"
                                                                                             title="your logo" width="155" /></a></div>
                                                                             </td>
@@ -998,10 +998,10 @@ app.post("/openAttendance/:courseId",async(req,res)=>{
                                                                                 style="width:100%;padding-right:0px;padding-left:0px;">
                                                                                 <div align="center" class="alignment"
                                                                                     style="line-height:10px"><a
-                                                                                        href="https://www.example.com"
+                                                                                        href="http://localhose:3000"
                                                                                         style="outline:none" tabindex="-1"
                                                                                         target="_blank"><img alt="your-logo"
-                                                                                            src="images/Your-logo.png"
+                                                                                            src="/coursePage/emailTemplateImages/Your-logo.png"
                                                                                             style="display: block; height: auto; border: 0; width: 193px; max-width: 100%;"
                                                                                             title="your-logo" width="193" /></a></div>
                                                                             </td>
@@ -1043,7 +1043,7 @@ app.post("/openAttendance/:courseId",async(req,res)=>{
                                                                                     <tr>
                                                                                         <td
                                                                                             style="vertical-align: middle; text-align: center; padding-top: 0px; padding-bottom: 0px; padding-left: 20px; padding-right: 20px;">
-                                                                                            <a href="https://www.example.com"
+                                                                                            <a href=""
                                                                                                 style="text-decoration: none;"
                                                                                                 target="_self"><img align="center"
                                                                                                     alt="new year celebration"
@@ -1162,7 +1162,7 @@ app.post("/openAttendance/:courseId",async(req,res)=>{
                                                                                         href="https://www.example.com"
                                                                                         style="outline:none" tabindex="-1"
                                                                                         target="_blank"><img alt="your logo"
-                                                                                            src="images/Your-logo.png"
+                                                                                            src="/coursePage/emailTemplateImages/Your-logo.png"
                                                                                             style="display: block; height: auto; border: 0; width: 155px; max-width: 100%;"
                                                                                             title="your logo" width="155" /></a></div>
                                                                             </td>
@@ -1497,8 +1497,8 @@ app.get("/downloadReport/:courseId",async(req,res)=>{
                     lectureData[mark[i].studentEmail][mark[i].lectureName] = "1";
                 }
 
-                const wb = new xl.Workbook();
-                const ws = wb.addWorksheet(`${course.courseCode}-${course.courseName}`);
+                const wb = await new xl.Workbook();
+                const ws = await wb.addWorksheet(`${course.courseCode}-${course.courseName}`);
                 colIndex = 1;
                 headerName.forEach(item=>{
                     ws.cell(1,colIndex++).string(item);
