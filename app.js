@@ -419,13 +419,7 @@ app.post("/addStudent/:courseName/:courseCode/:courseId",upload.single("file"),a
                                                                             <td class="pad"
                                                                                 style="width:100%;padding-right:0px;padding-left:0px;">
                                                                                 <div align="center" class="alignment"
-                                                                                    style="line-height:10px"><a
-                                                                                        href="http://localhose:3000"
-                                                                                        style="outline:none" tabindex="-1"
-                                                                                        target="_blank"><img alt="your-logo"
-                                                                                            src="/coursePage/emailTemplateImages/Your-logo.png"
-                                                                                            style="display: block; height: auto; border: 0; width: 193px; max-width: 100%;"
-                                                                                            title="your-logo" width="193" />AAS</a></div>
+                                                                                    style="line-height:10px"></div>
                                                                             </td>
                                                                         </tr>
                                                                     </table>
@@ -468,9 +462,9 @@ app.post("/addStudent/:courseName/:courseCode/:courseId",upload.single("file"),a
                                                                                             <a href=""
                                                                                                 style="text-decoration: none;"
                                                                                                 target="_self"><img align="center"
-                                                                                                    alt="new year celebration"
+                                                                                                    alt="graduaton celebration"
                                                                                                     class="icon" height="128"
-                                                                                                    src="/coursePage/emailTemplateImages/celebration-icon.png"
+                                                                                                    src="https://png.pngtree.com/png-clipart/20220617/ourmid/pngtree-graduation-cap-png-image_5108468.png"
                                                                                                     style="display: block; height: auto; margin: 0 auto; border: 0;"
                                                                                                     width="109" /></a></td>
                                                                                     </tr>
@@ -582,13 +576,7 @@ app.post("/addStudent/:courseName/:courseCode/:courseId",upload.single("file"),a
                                                                             <td class="pad"
                                                                                 style="width:100%;padding-right:0px;padding-left:0px;">
                                                                                 <div align="center" class="alignment"
-                                                                                    style="line-height:10px"><a
-                                                                                        href="https://www.example.com"
-                                                                                        style="outline:none" tabindex="-1"
-                                                                                        target="_blank"><img alt="your logo"
-                                                                                            src="/coursePage/emailTemplateImages/Your-logo.png"
-                                                                                            style="display: block; height: auto; border: 0; width: 155px; max-width: 100%;"
-                                                                                            title="your logo" width="155" /></a></div>
+                                                                                    style="line-height:10px"></div>
                                                                             </td>
                                                                         </tr>
                                                                     </table>
@@ -604,7 +592,7 @@ app.post("/addStudent/:courseName/:courseCode/:courseId",upload.single("file"),a
                                                                             <td class="pad">
                                                                                 <div
                                                                                     style="color:#ffffff;direction:ltr;font-family:Inter, sans-serif;font-size:14px;font-weight:400;letter-spacing:0px;line-height:120%;text-align:right;mso-line-height-alt:16.8px;">
-                                                                                    <p style="margin: 0;">Copyright © 2023 AAS, All rights reserved.</p>
+                                                                                    
                                                                                 </div>
                                                                             </td>
                                                                         </tr>
@@ -999,13 +987,7 @@ app.post("/openAttendance/:courseId",async(req,res)=>{
                                                                             <td class="pad"
                                                                                 style="width:100%;padding-right:0px;padding-left:0px;">
                                                                                 <div align="center" class="alignment"
-                                                                                    style="line-height:10px"><a
-                                                                                        href="http://localhose:3000"
-                                                                                        style="outline:none" tabindex="-1"
-                                                                                        target="_blank"><img alt="your-logo"
-                                                                                            src="/coursePage/emailTemplateImages/Your-logo.png"
-                                                                                            style="display: block; height: auto; border: 0; width: 193px; max-width: 100%;"
-                                                                                            title="your-logo" width="193" /></a></div>
+                                                                                    style="line-height:10px"></div>
                                                                             </td>
                                                                         </tr>
                                                                     </table>
@@ -1048,9 +1030,9 @@ app.post("/openAttendance/:courseId",async(req,res)=>{
                                                                                             <a href=""
                                                                                                 style="text-decoration: none;"
                                                                                                 target="_self"><img align="center"
-                                                                                                    alt="new year celebration"
+                                                                                                    alt="graduation celebration"
                                                                                                     class="icon" height="128"
-                                                                                                    src="/coursePage/emailTemplateImages/celebration-icon.png"
+                                                                                                    src="https://png.pngtree.com/png-clipart/20220617/ourmid/pngtree-graduation-cap-png-image_5108468.png"
                                                                                                     style="display: block; height: auto; margin: 0 auto; border: 0;"
                                                                                                     width="109" /></a></td>
                                                                                     </tr>
@@ -1160,13 +1142,7 @@ app.post("/openAttendance/:courseId",async(req,res)=>{
                                                                             <td class="pad"
                                                                                 style="width:100%;padding-right:0px;padding-left:0px;">
                                                                                 <div align="center" class="alignment"
-                                                                                    style="line-height:10px"><a
-                                                                                        href="https://www.example.com"
-                                                                                        style="outline:none" tabindex="-1"
-                                                                                        target="_blank"><img alt="your logo"
-                                                                                            src="/coursePage/emailTemplateImages/Your-logo.png"
-                                                                                            style="display: block; height: auto; border: 0; width: 155px; max-width: 100%;"
-                                                                                            title="your logo" width="155" /></a></div>
+                                                                                    style="line-height:10px"></div>
                                                                             </td>
                                                                         </tr>
                                                                     </table>
@@ -1182,7 +1158,7 @@ app.post("/openAttendance/:courseId",async(req,res)=>{
                                                                             <td class="pad">
                                                                                 <div
                                                                                     style="color:#ffffff;direction:ltr;font-family:Inter, sans-serif;font-size:14px;font-weight:400;letter-spacing:0px;line-height:120%;text-align:right;mso-line-height-alt:16.8px;">
-                                                                                    <p style="margin: 0;">Copyright © 2023 AAS, All rights reserved.</p>
+                                                                                    
                                                                                 </div>
                                                                             </td>
                                                                         </tr>
@@ -1515,7 +1491,7 @@ app.get("/downloadReport/:courseId",async(req,res)=>{
                     rowIndex++;
                 });
                 const n = `downloadReport/${course.courseCode}-${course.courseName}.xlsx`; 
-                wb.write(n);
+                const a = await wb.write(n);
                 res.download(n);
             }
         }
