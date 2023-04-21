@@ -21,7 +21,7 @@ const studentEnrollment = require("./models/studentEnrollment");
 const markAttendance = require("./models/markAttendance");
 const user = require("./models/user");
 const xl = require("excel4node");
-
+const fs = require("fs");
 const storage = multer.diskStorage({
     destination:(req,file,callback)=>{
         callback(null,"./uploads");
@@ -1561,21 +1561,28 @@ app.get("/downloadReport/:courseId",async(req,res)=>{
                     const wb = await new xl.Workbook();
                     const ws = await wb.addWorksheet(`${course.courseCode}-${course.courseName}`);
                     colIndex = 1;
-                    headerName.forEach(item=>{
-                        ws.cell(1,colIndex++).string(item);
+                    headerName.forEach(async(item)=>{
+                        const a = await ws.cell(1,colIndex++).string(item);
                     });
                     let rowIndex = 2;
-                    Object.keys(lectureData).forEach(key=>{
+                    Object.keys(lectureData).forEach(async(key)=>{
                         colIndex = 1;
-                        ws.cell(rowIndex,colIndex++).string(key);
-                        Object.keys(lectureData[key]).forEach(lec=>{
-                            ws.cell(rowIndex,colIndex++).string(lectureData[key][lec]);
+                        const a = await ws.cell(rowIndex,colIndex++).string(key);
+                        Object.keys(lectureData[key]).forEach(async(lec)=>{
+                           const a = await ws.cell(rowIndex,colIndex++).string(lectureData[key][lec]);
                         })
                         rowIndex++;
                     });
                     const n = `downloadReport/${course.courseCode}-${course.courseName}.xlsx`; 
                     const a = await wb.write(n);
-                    res.download(n);
+                    if(fs.existsSync(n)){
+                        res.download(n,(err)=>{
+                            console.log("Error while downloading the file");
+                        });
+                    }
+                    else{
+                        res.redirect(`/downloadReport/${req.params.courseId}`);
+                    }
                 }
             }
             catch(err){
