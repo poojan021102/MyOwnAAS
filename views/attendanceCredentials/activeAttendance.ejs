@@ -1,3 +1,19 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Active Attendances</title>
+</head>
+<body>
+    <% for(var i = 0; i<actAtt.length; ++i){%>
+        <li><a href="/markAttendance/<%= actAtt[i].id %>/<%= studentEmail %>">Mark your attendance for <%= actAtt[i].courseCode %></a> </li>
+        
+    <% } %>
+</body>
+</html> -->
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -43,11 +59,11 @@
                     <div class="sb-sidenav-menu">
                         <div class="nav">
                             <div class="sb-sidenav-menu-heading">Core</div>
-                            <a class="nav-link" href="#" disabled>
+                            <a class="nav-link" href="/dashboard/student" disabled>
                                 <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                                 Dashboard
                             </a>
-                            <a class="nav-link" href="/markAtt/<%= studentEmail %>" disabled>
+                            <a class="nav-link" href="#" disabled>
                                 <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                                 Active Attendances
                             </a>
@@ -72,16 +88,14 @@
                         <div class="card mb-4">
                             <div class="card-header">
                                 <i class="fas fa-table me-1"></i>
-                                List of Courses created
+                                Active Attendances
                             </div>
                             <div class="card-body">
                                 <table id="datatablesSimple">
                                     <thead>
                                         <tr>
                                             <th>Course Code</th>
-                                            <th>Course Name</th>
-                                            <th>Instructor Email</th>
-                                            <th>Instructor Name</th>
+                                            <th><Link></Link></th>
                                         </tr>
                                     </thead>
                                     <tfoot>
@@ -93,14 +107,11 @@
                                         </tr>
                                     </tfoot>
                                     <tbody>
-                                        <% for(var i = 0; i<data.length; ++i){%>
+                                        <% for(var i = 0; i<actAtt.length; ++i){%>
                                             <tr>
-                                                <td><a href="/studentCoursePage/<%= data[i].courseId %>"><%= data[i].courseCode %></a></td>
-                                                <td><%= data[i].courseName %></td>
-                                                <td><%= data[i].instructorEmail %></td>
-                                                <td><%= data[i].instructorName %></td>
+                                                <td><%= actAtt[i].courseCode %></td>
+                                                <td><a href="/markAttendance/<%= actAtt[i].id %>/<%= studentEmail %>">Mark your attendance here.%></a> </td>
                                             </tr>
-                                            <!-- <li><a href = "/studentCoursePage/<%= data[i].courseId %>"><%= data[i].courseCode %>: <%= data[i].courseName %>, Instructor Name: <%= data[i].instructorName %>, studentEmail: <%= data[i].studentEmail %></a></li> -->
                                         <% } %>
                                     </tbody>
                                 </table>
