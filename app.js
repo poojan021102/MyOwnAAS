@@ -50,8 +50,8 @@ con.on('open',()=>{
 // const emailEmail = "rosalee.ferry0@ethereal.email";
 // const emailPassword = "6aAGhJPAC88yShD2A8";
 
-const emailEmail = "poojanpatel02112002@gmail.com"
-const emailPassword = "yozbsphjlxhtggpl"
+const emailEmail = "aas.auto.attendance.system@gmail.com"
+const emailPassword = "gndwetnpeynkwxeb"
 
 app.set("view engine","ejs")
 initializingPassport(passport);
