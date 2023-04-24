@@ -10,7 +10,7 @@
     <title>
         <%= courseCode %>
     </title>
-    <link href="https://png.pngtree.com/png-clipart/20220617/ourmid/pngtree-graduation-cap-png-image_5108468.png" rel="icon">
+    <link href="/homePageTemplate/assets/img/hero-img.png" rel="icon">
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
     <link href="/coursePage/css/styles.css" rel="stylesheet" />
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
@@ -22,7 +22,7 @@
         <a class="navbar-brand ps-3" href="/StudentCoursePage/<%= courseId %>">
             <%= courseCode %>
         </a>
-        <a href="/StudentCoursePage/<%= courseId %>">Dasboard</a>
+        <a href="/dashboard/student" style="color: #fff;">Dashboard</a>
         <!-- Sidebar Toggle-->
         <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i
                 class="fas fa-bars"></i></button>
@@ -55,10 +55,10 @@
             <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
                 <div class="sb-sidenav-menu">
                     <div class="nav">
-                        <div class="sb-sidenav-menu-heading">Core</div>
+                        <div class="sb-sidenav-menu-heading"></div>
                         <a class="nav-link" href="/studentCoursePage/<%= courseId %>">
                             <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                            Dashboard
+                            CoursePage
                         </a>
                         
                     </div>
@@ -87,7 +87,7 @@
                                     <%= totalLectureCreated %>
                                 </div>
                                 <div class="card-footer d-flex align-items-center justify-content-between">
-                                    <a class="small text-white stretched-link">Number of Lectures Created</a>
+                                    <a class="small text-white stretched-link" style="font-weight: 600; text-decoration: none;">Number of Lectures Created</a>
                                     <!-- <div class="small text-white"><i class="fas fa-angle-right"></i></div> -->
                                 </div>
                             </div>
@@ -98,7 +98,7 @@
                                     <%= markedAttendance %>
                                 </div>
                                 <div class="card-footer d-flex align-items-center justify-content-between">
-                                    <a class="small text-white stretched-link">Number of Lectures Attended</a>
+                                    <a class="small text-white stretched-link" style="font-weight: 600; text-decoration: none;">Number of Lectures Attended</a>
                                     <!-- <div class="small text-white"><i class="fas fa-angle-right"></i></div> -->
                                 </div>
                             </div>
@@ -109,7 +109,7 @@
                                     <%= averageAttendance %>%
                                 </div>
                                 <div class="card-footer d-flex align-items-center justify-content-between">
-                                    <a class="small text-white stretched-link">Average Attendance</a>
+                                    <a class="small text-white stretched-link" style="font-weight: 600; text-decoration: none;">Average Attendance</a>
                                     <!-- <div class="small text-white"><i class="fas fa-angle-right"></i></div> -->
                                 </div>
                             </div>
@@ -142,11 +142,6 @@
                 <div class="container-fluid px-4">
                     <div class="d-flex align-items-center justify-content-between small">
                         <div class="text-muted">Copyright &copy; AutoAttendance 2023</div>
-                        <div>
-                            <a href="#">Privacy Policy</a>
-                            &middot;
-                            <a href="#">Terms &amp; Conditions</a>
-                        </div>
                     </div>
                 </div>
             </footer>
@@ -260,5 +255,4 @@
 
     </script>
 </body>
-
 </html>

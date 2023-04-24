@@ -7,7 +7,7 @@
         <meta name="description" content="" />
         <meta name="author" content="" />
         <title><%= instructorEmail %></title>
-        <link href="https://png.pngtree.com/png-clipart/20220617/ourmid/pngtree-graduation-cap-png-image_5108468.png" rel="icon">
+        <link href="/homePageTemplate/assets/img/hero-img.png" rel="icon">
         <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
         <link href="/coursePage/css/styles.css" rel="stylesheet" />
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
@@ -97,9 +97,9 @@
                                     </tfoot>
                                     <tbody>
                                             <% for(var i = 0; i<data.length; ++i){%>
-                                                <tr>
-                                                    <td><a href="/coursePage/<%= data[i].id %>"><%= data[i].courseCode %></a></td>
-                                                    <td><%= data[i].courseName %></td>
+                                                <tr style="vertical-align: middle;">
+                                                    <td><a href="/coursePage/<%= data[i].id %>" class="btn btn-sm" style="font-weight: 700; font-size: 130%; text-decoration: underline; color: blue"><%= data[i].courseCode %></a></td>
+                                                    <td><div style="margin-top: 1%; font-size: 130%;"><%= data[i].courseName %></div></td>
                                                     <td><a href = "/deleteCourse/<%= data[i].id %>" class="btn btn-danger">Delete</a></td>
                                                 </tr>
                                             <% } %>
@@ -113,11 +113,6 @@
                     <div class="container-fluid px-4">
                         <div class="d-flex align-items-center justify-content-between small">
                             <div class="text-muted">Copyright &copy; AutoAttendance 2023</div>
-                            <div>
-                                <a href="#">Privacy Policy</a>
-                                &middot;
-                                <a href="#">Terms &amp; Conditions</a>
-                            </div>
                         </div>
                     </div>
                 </footer>

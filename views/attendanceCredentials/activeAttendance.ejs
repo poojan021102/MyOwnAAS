@@ -23,7 +23,7 @@
         <meta name="description" content="" />
         <meta name="author" content="" />
         <title><%= studentEmail %></title>
-        <link href="https://png.pngtree.com/png-clipart/20220617/ourmid/pngtree-graduation-cap-png-image_5108468.png" rel="icon">
+        <link href="/homePageTemplate/assets/img/hero-img.png" rel="icon">
         <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
         <link href="/coursePage/css/styles.css" rel="stylesheet" />
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
@@ -58,7 +58,7 @@
                 <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
                     <div class="sb-sidenav-menu">
                         <div class="nav">
-                            <div class="sb-sidenav-menu-heading">Core</div>
+                            <div class="sb-sidenav-menu-heading"></div>
                             <a class="nav-link" href="/dashboard/student" disabled>
                                 <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                                 Dashboard
@@ -109,8 +109,8 @@
                                     <tbody>
                                         <% for(var i = 0; i<actAtt.length; ++i){%>
                                             <tr>
-                                                <td><%= actAtt[i].courseCode %></td>
-                                                <td><a href="/markAttendance/<%= actAtt[i].id %>/<%= studentEmail %>">Mark your attendance here.%></a> </td>
+                                                <td><div style="font-weight: 700; font-size: 170%; color: blue"><%= actAtt[i].courseCode %></div></td>
+                                                <td><a href="/markAttendance/<%= actAtt[i].id %>/<%= studentEmail %>" class="btn btn-success">Mark Attendance%></a> </td>
                                             </tr>
                                         <% } %>
                                     </tbody>
@@ -123,11 +123,6 @@
                     <div class="container-fluid px-4">
                         <div class="d-flex align-items-center justify-content-between small">
                             <div class="text-muted">Copyright &copy; AutoAttendance 2023</div>
-                            <div>
-                                <a href="#">Privacy Policy</a>
-                                &middot;
-                                <a href="#">Terms &amp; Conditions</a>
-                            </div>
                         </div>
                     </div>
                 </footer>
