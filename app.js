@@ -80,6 +80,61 @@ app.get("/",async(req,res)=>{
 });
 
 
+// utility function
+function isValidPassword(password) {
+    // for checking if password length is between 8 and 15
+    if (!(password.length >= 8 && password.length <= 15)) {
+      return false;
+    }
+   
+    // to check space
+    if (password.indexOf(" ") !== -1) {
+      return false;
+    }
+   
+    // for digits from 0 to 9
+    let count = 0;
+    for (let i = 0; i <= 9; i++) {
+      if (password.indexOf(i) !== -1) {
+        count = 1;
+      }
+    }
+    if (count === 0) {
+      return false;
+    }
+   
+    // for special characters
+    if (!/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password)) {
+      return false;
+    }
+   
+    // for capital letters
+    count = 0;
+    for (let i = 65; i <= 90; i++) {
+      if (password.indexOf(String.fromCharCode(i)) !== -1) {
+        count = 1;
+      }
+    }
+    if (count === 0) {
+      return false;
+    }
+   
+    // for small letters
+    count = 0;
+    for (let i = 97; i <= 122; i++) {
+      if (password.indexOf(String.fromCharCode(i)) !== -1) {
+        count = 1;
+      }
+    }
+    if (count === 0) {
+      return false;
+    }
+   
+    // if all conditions fail
+    return true;
+  }
+
+
 // instructor register
 app.post("/register/instructor",async(req,res)=>{
     const user = await User.findOne({email:req.body.email})
@@ -88,8 +143,13 @@ app.post("/register/instructor",async(req,res)=>{
     }
     else{
         try{
-            const newUser=await User.create(req.body);
-            res.redirect("/login/instructor")
+            if(!isValidPassword(req.body.password)){
+                res.redirect("/register/instructor");
+            }
+            else{
+                const newUser=await User.create(req.body);
+                res.redirect("/login/instructor")
+            }
         }
         catch(err){
             res.redirect("/register/instructor");
@@ -109,15 +169,20 @@ app.post("/register/student",async(req,res)=>{
     }
     else{
         try{
-            const n = await User.find({
-                email:req.body.email
-            });
-            if(n.length){
+            if(!isValidPassword(req.body.password)){
                 res.redirect("/register/student");
             }
             else{
-                const newUser=await User.create(req.body);
-                res.redirect("/login/student")
+                const n = await User.find({
+                    email:req.body.email
+                });
+                if(n.length){
+                    res.redirect("/register/student");
+                }
+                else{
+                    const newUser=await User.create(req.body);
+                    res.redirect("/login/student")
+                }
             }
         }
         catch(err){
