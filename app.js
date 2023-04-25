@@ -81,7 +81,7 @@ app.get("/",async(req,res)=>{
 
 
 // utility function
-function isValidPassword(password) {
+isValidPassword = (password)=>{
     // for checking if password length is between 8 and 15
     if (!(password.length >= 8 && password.length <= 15)) {
       return false;
@@ -144,7 +144,32 @@ app.post("/register/instructor",async(req,res)=>{
     else{
         try{
             if(!isValidPassword(req.body.password)){
-                res.redirect("/register/instructor");
+                res.redirect("/register2/instructor");
+            }
+            else{
+                const newUser=await User.create(req.body);
+                res.redirect("/login/instructor")
+            }
+        }
+        catch(err){
+            res.redirect("/register2/instructor");
+            console.log("error");
+        }
+    }
+});
+app.get("/register/instructor",(req,res)=>{
+    res.render("register/instructorRegister")
+})
+// second register instructor
+app.post("/register2/instructor",async(req,res)=>{
+    const user = await User.findOne({email:req.body.email})
+    if (user){
+        res.redirect("/register2/instructor");
+    }
+    else{
+        try{
+            if(!isValidPassword(req.body.password)){
+                res.redirect("/register2/instructor");
             }
             else{
                 const newUser=await User.create(req.body);
@@ -157,9 +182,10 @@ app.post("/register/instructor",async(req,res)=>{
         }
     }
 });
-app.get("/register/instructor",(req,res)=>{
-    res.render("register/instructorRegister")
+app.get("/register2/instructor",(req,res)=>{
+    res.render("register/instructorRegister2")
 })
+
 
 // student register
 app.post("/register/student",async(req,res)=>{
@@ -195,21 +221,73 @@ app.get("/register/student",(req,res)=>{
     res.render("register/studentRegister")
 })
 
+// student register2
+app.post("/register2/student",async(req,res)=>{
+    const user = await User.findOne({email:req.body.email})
+    if(user){
+        res.redirect("/register2/student")
+    }
+    else{
+        try{
+            if(!isValidPassword(req.body.password)){
+                res.redirect("/register2/student");
+            }
+            else{
+                const n = await User.find({
+                    email:req.body.email
+                });
+                if(n.length){
+                    res.redirect("/register2/student");
+                }
+                else{
+                    const newUser=await User.create(req.body);
+                    res.redirect("/login/student")
+                }
+            }
+        }
+        catch(err){
+            console.log("Error");
+            res.redirect("/register2/student");
+        }
+    }
+});
+app.get("/register/student",(req,res)=>{
+    res.render("register/studentRegiste2r")
+})
+
+
 // instructor login
-app.post("/login/instructor",passport.authenticate("local",{failureRedirect:"/login/instructor",successRedirect:"/dashboard/instructor"}),(req,res)=>{
+app.post("/login/instructor",passport.authenticate("local",{failureRedirect:"/login2/instructor",successRedirect:"/dashboard/instructor"}),(req,res)=>{
     
 })
 app.get("/login/instructor",(req,res)=>{
     res.render("login/instructorLogin");
 })
 
+// instructor login2
+app.post("/login2/instructor",passport.authenticate("local",{failureRedirect:"/login2/instructor",successRedirect:"/dashboard/instructor"}),(req,res)=>{
+    
+})
+app.get("/login2/instructor",(req,res)=>{
+    res.render("login/instructorLogin2");
+})
+
 // student login
-app.post("/login/student",passport.authenticate("local",{failureRedirect:"/login/student",successRedirect:"/dashboard/student"}),(req,res)=>{
+app.post("/login/student",passport.authenticate("local",{failureRedirect:"/login2/student",successRedirect:"/dashboard/student"}),(req,res)=>{
 
 })
 app.get("/login/student",(req,res)=>{
     res.render("login/studentLogin");
 })
+
+// student login2
+app.post("/login2/student",passport.authenticate("local",{failureRedirect:"/login2/student",successRedirect:"/dashboard/student"}),(req,res)=>{
+
+})
+app.get("/login2/student",(req,res)=>{
+    res.render("login/studentLogin2");
+})
+
 
 // instructor dashboard
 app.get("/dashboard/instructor",async(req,res)=>{
