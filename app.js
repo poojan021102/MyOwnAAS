@@ -139,7 +139,7 @@ isValidPassword = (password)=>{
 app.post("/register/instructor",async(req,res)=>{
     const user = await User.findOne({email:req.body.email})
     if (user){
-        res.redirect("/register/instructor");
+        res.redirect("/register2/instructor");
     }
     else{
         try{
@@ -177,7 +177,7 @@ app.post("/register2/instructor",async(req,res)=>{
             }
         }
         catch(err){
-            res.redirect("/register/instructor");
+            res.redirect("/register2/instructor");
             console.log("error");
         }
     }
@@ -191,29 +191,21 @@ app.get("/register2/instructor",(req,res)=>{
 app.post("/register/student",async(req,res)=>{
     const user = await User.findOne({email:req.body.email})
     if(user){
-        res.redirect("/register/student")
+        res.redirect("/register2/student")
     }
     else{
         try{
             if(!isValidPassword(req.body.password)){
-                res.redirect("/register/student");
+                res.redirect("/register2/student");
             }
             else{
-                const n = await User.find({
-                    email:req.body.email
-                });
-                if(n.length){
-                    res.redirect("/register/student");
-                }
-                else{
-                    const newUser=await User.create(req.body);
-                    res.redirect("/login/student")
-                }
+                const newUser=await User.create(req.body);
+                res.redirect("/login/student")
             }
         }
         catch(err){
             console.log("Error");
-            res.redirect("/register/student");
+            res.redirect("/register2/student");
         }
     }
 });
@@ -233,16 +225,8 @@ app.post("/register2/student",async(req,res)=>{
                 res.redirect("/register2/student");
             }
             else{
-                const n = await User.find({
-                    email:req.body.email
-                });
-                if(n.length){
-                    res.redirect("/register2/student");
-                }
-                else{
-                    const newUser=await User.create(req.body);
-                    res.redirect("/login/student")
-                }
+                const newUser=await User.create(req.body);
+                res.redirect("/login/student")
             }
         }
         catch(err){
@@ -251,8 +235,8 @@ app.post("/register2/student",async(req,res)=>{
         }
     }
 });
-app.get("/register/student",(req,res)=>{
-    res.render("register/studentRegiste2r")
+app.get("/register2/student",(req,res)=>{
+    res.render("register/studentRegister2")
 })
 
 
